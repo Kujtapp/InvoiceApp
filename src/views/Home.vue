@@ -7,7 +7,7 @@
         <span>There are 4 total Invoices</span>
       </div>
       <div class="right flex">
-        <div @click="toggleFilterMenu" class="filter flex" ref="filter">
+        <div @click="toggleFilterMenu" class="filter flex">
           <span>Filter by Status</span>
           <img src="@/assets/icon-arrow-down.svg" alt="">
           <ul v-show="filterMenu" class="filter-menu">
@@ -35,6 +35,12 @@ export default {
   data() {
     return {
       filterMenu: false,
+    }
+  },
+  methods: {
+    newInvoice() {},
+    toggleFilterMenu() {
+      this.filterMenu = !this.filterMenu
     }
   }
 };
@@ -64,13 +70,10 @@ export default {
         }
       }
       .filter {
+        cursor: pointer;
         position: relative;
         margin-right: 40px;
 
-        span,
-        img {
-          pointer-events: none;
-        }
         img {
           margin-left: 9px;
           width: 9px;
@@ -83,7 +86,7 @@ export default {
           top: 25px;
           list-style: none;
           background-color: #1e2139;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
 
           li {
             cursor: pointer;

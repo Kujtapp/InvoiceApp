@@ -1,9 +1,10 @@
 <template>
 <div>
   <div v-if="!mobile" class="app flex">
-    <navigation />
+    <navigation></navigation>
     <div class="app-content flex flex-column">
-       <router-view />
+      <invoice-modal></invoice-modal>
+      <router-view />
     </div>
   </div>
   <div v-else class="mobile-message flex flex-column">
@@ -15,10 +16,11 @@
 
 <script>
 import Navigation from './components/Navigation.vue'
-
+import InvoiceModal from './components/InvoiceModal.vue'
 export default {
   components: {
-    Navigation
+    Navigation,
+    InvoiceModal
   },
   data() {
     return {
