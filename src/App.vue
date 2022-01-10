@@ -1,10 +1,14 @@
 <template>
 <div>
-  <div class="app flex">
+  <div v-if="!mobile" class="app flex">
     <navigation />
     <div class="app-content flex flex-column">
        <router-view />
     </div>
+  </div>
+  <div v-else class="mobile-message flex flex-column">
+    <h2>Sorry, this app is not supported on mobile devices</h2>
+    <p>To use this app, please us ur mobile or Tablet</p>
   </div>
 </div>
 </template>
@@ -15,6 +19,24 @@ import Navigation from './components/Navigation.vue'
 export default {
   components: {
     Navigation
+  },
+  data() {
+    return {
+      mobile: false
+    }
+  },
+  created() {
+    window.addEventListener("resize", this.checkScreen);
+  },
+  methods: {
+    checkScreen() {
+      const windowWidth = window.innerWidth;
+      if(windowWidth <= 750) {
+        this.mobile = true;
+        return;
+      }
+      this.mobile = false;
+    }
   }
 }
 </script>
@@ -44,6 +66,15 @@ export default {
     flex: 1;
     position: relative;
   }
+}
+
+.mobile-message {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #141625;
+  color: #fff;
 }
 
 button,
