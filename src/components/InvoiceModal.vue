@@ -41,7 +41,7 @@
                     <label for="clientStreetAddress">Street Address</label>
                     <input required type="text" id="clientStreetAddress" v-model="clientStreetAddress">
                 </div>
-                 <div class="location-details flex">
+                <div class="location-details flex">
                     <div class="input flex flex-column">
                         <label for="clientCity">City</label>
                         <input required type="text" id="clientCity" v-model="clientCity">
@@ -90,8 +90,8 @@
                             <th class="total">Total</th>
                         </tr>
                         <tr class="table-items flex" v-for="(item, index) in invoiceItemList" :key="index">
-                            <td class="item">Input <input type="text" v-model="item.itemName"></td>
-                            <td class="qty">QTY<input type="text" v-model="item.qty"></td> 
+                            <td class="item-name"><input type="text" v-model="item.itemName"></td>
+                            <td class="qty"><input type="text" v-model="item.qty"></td>
                             <td class="price"><input type="text" v-model="item.price"></td>
                             <td class="total flex">${{ item.total = item.qty * item.price }}</td>
                             <img @click="deleteInvoiceItem(item.id)" src="@/assets/icon-delete.svg" alt="">
@@ -118,185 +118,212 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-export default {
-    name: "InvoiceModal",
-    data() {
-        return {
-        dateOptions: { year: "numeric", month: "short", day: "numeric" },
-        docId: null,
-        loading: null,
-        billerStreetAddress: null,
-        billerCity: null,
-        billerZipCode: null,
-        billerCountry: null,
-        clientName: null,
-        clientEmail: null,
-        clientStreetAddress: null,
-        clientCity: null,
-        clientZipCode: null,
-        clientCountry: null,
-        invoiceDateUnix: null,
-        invoiceDate: null,
-        paymentTerms: null,
-        paymentDueDateUnix: null,
-        paymentDueDate: null,
-        productDescription: null,
-        invoicePending: null,
-        invoiceDraft: null,
-        invoiceItemList: [],
-        invoiceTotal: 0,
-        };
-    },
-    methods: {
-        ...mapMutations(['TOGGLE_INVOICE']),
-        closeInvoice() {
-            this.TOGGLE_INVOICE();
-        }
-    },
-    created() {
-        //get current date for invoice date field
-        this.invoiceDateUnix = Date.now();
-        this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString('en-us', this.dateOptions)
-    },
-    watch: {
-        paymentTerms() {
-            const futureDate = new Date();
-            this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
-            this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString('en-us', this.dateOptions);
+    import {
+        mapMutations
+    } from 'vuex';
+    import {
+        uid
+    } from 'uid'
+    export default {
+        name: "InvoiceModal",
+        data() {
+            return {
+                dateOptions: {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                },
+                docId: null,
+                loading: null,
+                billerStreetAddress: null,
+                billerCity: null,
+                billerZipCode: null,
+                billerCountry: null,
+                clientName: null,
+                clientEmail: null,
+                clientStreetAddress: null,
+                clientCity: null,
+                clientZipCode: null,
+                clientCountry: null,
+                invoiceDateUnix: null,
+                invoiceDate: null,
+                paymentTerms: null,
+                paymentDueDateUnix: null,
+                paymentDueDate: null,
+                productDescription: null,
+                invoicePending: null,
+                invoiceDraft: null,
+                invoiceItemList: [],
+                invoiceTotal: 0,
+            };
+        },
+        methods: {
+            ...mapMutations(['TOGGLE_INVOICE']),
+            closeInvoice() {
+                this.TOGGLE_INVOICE();
+            },
+            addNewInvoiceItem() {
+                this.invoiceItemList.push({
+                    id: uid(),
+                    itemName: "",
+                    qty: "",
+                    price: 0,
+                    total: 0
+                });
+            },
+            deleteInvoiceItem(id) {
+                this.invoiceItemList = this.invoiceItemList.filter(item => item.id !== id);
+            }
+        },
+        created() {
+            //get current date for invoice date field
+            this.invoiceDateUnix = Date.now();
+            this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString('eu', this.dateOptions)
+        },
+        watch: {
+            paymentTerms() {
+                const futureDate = new Date();
+                this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
+                this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString('eu', this.dateOptions);
+            }
         }
     }
-}
 </script>
 
 <style lang="scss" scoped>
-.invoice-wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: transparent;
-    width: 100%;
-    height: 100vh;
-    overflow: scroll;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    @media(min-width: 900px) {
-        left: 90px;
-    }
-
-    .invoice-content {
-        position: relative;
-        padding: 56px;
-        max-width: 700px;
+    .invoice-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: transparent;
         width: 100%;
-        background-color: #141625;
-        color: #fff;
-        box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        height: 100vh;
+        overflow: scroll;
 
-        h1 {
-            margin-bottom: 48px;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media(min-width: 900px) {
+            left: 90px;
+        }
+
+        .invoice-content {
+            position: relative;
+            padding: 56px;
+            max-width: 700px;
+            width: 100%;
+            background-color: #141625;
             color: #fff;
-        }
-        
-        h3 {
-            margin-bottom: 16px;
-            font-size: 18px;
-            color: #777f98;
-        }
+            box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-        h4 {
-            color: #7c5dfa;
-            font-size: 12px;
-            margin-bottom: 24px;
-        }
+            h1 {
+                margin-bottom: 48px;
+                color: #fff;
+            }
 
-        // bill to / bill from 
-        .bill-to,
-        .bill-form {
-            margin-bottom: 48px;
+            h3 {
+                margin-bottom: 16px;
+                font-size: 18px;
+                color: #777f98;
+            }
 
-            .location-details {
-                gap: 16px;
-                div {
-                    flex: 1;
+            h4 {
+                color: #7c5dfa;
+                font-size: 12px;
+                margin-bottom: 24px;
+            }
+
+            // bill to / bill from 
+            .bill-to,
+            .bill-form {
+                margin-bottom: 48px;
+
+                .location-details {
+                    gap: 16px;
+
+                    div {
+                        flex: 1;
+                    }
                 }
             }
-        }
 
-        // invoice Work
+            // invoice Work
 
-        .invoice-work {
-            .payment {
-                gap: 24px;
-                div {
-                    flex: 1;
+            .invoice-work {
+                .payment {
+                    gap: 24px;
+
+                    div {
+                        flex: 1;
+                    }
                 }
-            }
-            .work-items {
-                .item-list {
-                    width: 100%;
 
-                    //Item Table Styling
-                    .table-heading,
-                    .table-items {
-                        gap: 16px;
-                        font-size: 12px;
+                .work-items {
+                    .item-list {
+                        width: 100%;
 
-                        .item-name {
-                            flex-basis: 50%;
+                        //Item Table Styling
+                        .table-heading,
+                        .table-items {
+                            gap: 16px;
+                            font-size: 12px;
+
+                            .item-name {
+                                flex-basis: 50%;
+                            }
+
+                            .qty {
+                                flex-basis: 10%;
+                            }
+
+                            .price {
+                                flex-basis: 20%;
+                            }
+
+                            .total {
+                                flex-basis: 20%;
+                                align-self: center;
+                            }
                         }
-                        
-                        .qty {
-                            flex-basis: 10%;
+
+                        .table-heading {
+                            margin-bottom: 16px;
+
+                            th {
+                                text-align: left;
+                            }
                         }
 
-                        .price {
-                            flex-basis: 20%;
-                        }
+                        .table-items {
+                            position: relative;
+                            margin-bottom: 24px;
 
-                        .total {
-                            flex-basis: 20%;
-                            align-self: center;
+                            img {
+                                cursor: pointer;
+                                position: absolute;
+                                top: 15px;
+                                right: 0;
+                                height: 16px;
+                            }
                         }
                     }
 
-                    .table-heading {
-                        margin-bottom: 16px;
-
-                        th {
-                            text-align: left;
-                        }
-                    }
-
-                    .table-items {
-                        position: relative;
-                        margin-bottom: 24px;
+                    .button {
+                        color: #fff;
+                        background-color: #252945;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
 
                         img {
-                            position: absolute;
-                            top: 15px;
-                            right: 0;
-                            widows: 12px;
-                            height: 16px;
+                            margin-right: 4px;
                         }
                     }
                 }
-
-                .button {
-                    color: #fff;
-                    background-color: #252945;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-
-                    img {
-                        margin-right: 4px;
-                    }
-                }
             }
-        }
-        .save {
+
+            .save {
                 margin-top: 60px;
 
                 div {
@@ -307,29 +334,29 @@ export default {
                     justify-content: center;
                 }
             }
-    }
+        }
 
-    .input {
-        margin-bottom: 24px;
-    }
+        .input {
+            margin-bottom: 24px;
+        }
 
-    label {
-        font-size: 12px;
-        margin-bottom: 6px;
-    }
+        label {
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
 
-    input,
-    select {
-        width: 100%;
-        background-color: #1e2139;
-        color: #fff;
-        border-radius: 4px;
-        padding: 12px 4px;
-        border: none;
+        input,
+        select {
+            width: 100%;
+            background-color: #1e2139;
+            color: #fff;
+            border-radius: 4px;
+            padding: 12px 4px;
+            border: none;
 
-        &:focus {
-            outline: none;
+            &:focus {
+                outline: none;
+            }
         }
     }
-}
 </style>

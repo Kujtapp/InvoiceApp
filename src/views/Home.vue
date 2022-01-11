@@ -29,100 +29,106 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-export default {
-  name: "Home",
-  components: {},
-  data() {
-    return {
-      filterMenu: false,
-    }
-  },
-  methods: {
-    ...mapMutations(['TOGGLE_INVOICE']),
-    newInvoice() {
-      this.TOGGLE_INVOICE();
+  import {
+    mapMutations
+  } from 'vuex'
+  export default {
+    name: "Home",
+    components: {},
+    data() {
+      return {
+        filterMenu: false,
+      }
     },
-    toggleFilterMenu() {
-      this.filterMenu = !this.filterMenu
+    methods: {
+      ...mapMutations(['TOGGLE_INVOICE']),
+      newInvoice() {
+        this.TOGGLE_INVOICE();
+      },
+      toggleFilterMenu() {
+        this.filterMenu = !this.filterMenu
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.home {
-  color: white;
+  .home {
+    color: white;
 
-  .header {
-    margin-bottom: 65px;
+    .header {
+      margin-bottom: 65px;
 
-    .left,
-    .right {
-      flex: 1;
-    }
-    .right {
-      justify-content: flex-end;
-      align-items: center;
+      .left,
+      .right {
+        flex: 1;
+      }
 
-      .button,
-      .filter {
+      .right {
+        justify-content: flex-end;
         align-items: center;
 
-        span {
-          font-size: 12px;
-        }
-      }
-      .filter {
-        cursor: pointer;
-        position: relative;
-        margin-right: 40px;
+        .button,
+        .filter {
+          align-items: center;
 
-        img {
-          margin-left: 9px;
-          width: 9px;
-          height: 5px;
-        }
-
-        .filter-menu {
-          width: 120px;
-          position: absolute;
-          top: 25px;
-          list-style: none;
-          background-color: #1e2139;
-          box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-
-          li {
-            cursor: pointer;
+          span {
             font-size: 12px;
-            padding: 10px 20px;
+          }
+        }
 
-            &:hover {
-              color: #1e2139;
-              background-color: #fff;
+        .filter {
+          cursor: pointer;
+          position: relative;
+          margin-right: 40px;
+
+          img {
+            margin-left: 9px;
+            width: 9px;
+            height: 5px;
+          }
+
+          .filter-menu {
+            width: 120px;
+            position: absolute;
+            top: 25px;
+            list-style: none;
+            background-color: #1e2139;
+            box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+
+            li {
+              cursor: pointer;
+              font-size: 12px;
+              padding: 10px 20px;
+
+              &:hover {
+                color: #1e2139;
+                background-color: #fff;
+              }
+            }
+          }
+        }
+
+        .button {
+          padding: 8px 10px;
+          background-color: #7c5dfa;
+          border-radius: 40px;
+
+          .inner-button {
+            margin-right: 8px;
+            border-radius: 50%;
+            padding: 8px;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+
+            img {
+              width: 10px;
+              height: 10px;
             }
           }
         }
       }
-      .button {
-        padding: 8px 10px;
-        background-color: #7c5dfa;
-        border-radius: 40px;
-
-        .inner-button {
-          margin-right: 8px;
-          border-radius: 50%;
-          padding: 8px;
-          align-items: center;
-          justify-content: center;
-          background-color: #fff;
-          img {
-            width: 10px;
-            height: 10px;
-          }
-        }
-      }
     }
   }
-}
 </style>
