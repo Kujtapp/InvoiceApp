@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
     name: "InvoiceModal",
     data() {
@@ -147,6 +148,24 @@ export default {
         invoiceTotal: 0,
         };
     },
+    methods: {
+        ...mapMutations(['TOGGLE_INVOICE']),
+        closeInvoice() {
+            this.TOGGLE_INVOICE();
+        }
+    },
+    created() {
+        //get current date for invoice date field
+        this.invoiceDateUnix = Date.now();
+        this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString('en-us', this.dateOptions)
+    },
+    watch: {
+        paymentTerms() {
+            const futureDate = new Date();
+            this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
+            this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString('en-us', this.dateOptions);
+        }
+    }
 }
 </script>
 
@@ -159,6 +178,9 @@ export default {
     width: 100%;
     height: 100vh;
     overflow: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     @media(min-width: 900px) {
         left: 90px;
     }
