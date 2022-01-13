@@ -1,5 +1,5 @@
 <template>
-    <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
+    <div v-show="displayInvoice" class="invoice-wrap transition flex flex-column">
         <form @submit.prevent="submitForm" class="invoice-content">
             <h1>New Invoice</h1>
 
@@ -105,8 +105,8 @@
             </div>
             <!-- Save/Exit -->
             <div class="save flex">
-                <div class="">
-                    <button @click="closeInvoice" class="red">Cancel</button>
+                <div>
+                    <button type="button" @click="closeInvoice" class="red">Cancel</button>
                 </div>
                 <div class="right">
                     <button @click="saveDraft" class="dark-purple">Save Draft</button>
@@ -118,12 +118,7 @@
 </template>
 
 <script>
-    import {
-        mapMutations
-    } from 'vuex';
-    import {
-        uid
-    } from 'uid'
+    import { uid } from 'uid'
     export default {
         name: "InvoiceModal",
         data() {
@@ -133,6 +128,7 @@
                     month: "short",
                     day: "numeric"
                 },
+                displayInvoice: true,
                 docId: null,
                 loading: null,
                 billerStreetAddress: null,
@@ -158,9 +154,8 @@
             };
         },
         methods: {
-            ...mapMutations(['TOGGLE_INVOICE']),
             closeInvoice() {
-                this.TOGGLE_INVOICE();
+                this.displayInvoice = !this.displayInvoice
             },
             addNewInvoiceItem() {
                 this.invoiceItemList.push({
@@ -206,6 +201,10 @@
 
         @media(min-width: 900px) {
             left: 90px;
+        }
+
+        .transition {
+            transition-timing-function: ease;
         }
 
         .invoice-content {

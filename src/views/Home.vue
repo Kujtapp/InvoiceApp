@@ -29,21 +29,16 @@
 </template>
 
 <script>
-  import {
-    mapMutations
-  } from 'vuex'
   export default {
     name: "Home",
-    components: {},
     data() {
       return {
         filterMenu: false,
       }
     },
     methods: {
-      ...mapMutations(['TOGGLE_INVOICE']),
       newInvoice() {
-        this.TOGGLE_INVOICE();
+        
       },
       toggleFilterMenu() {
         this.filterMenu = !this.filterMenu
@@ -118,8 +113,6 @@
             margin-right: 8px;
             border-radius: 50%;
             padding: 8px;
-            align-items: center;
-            justify-content: center;
             background-color: #fff;
 
             img {
