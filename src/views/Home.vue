@@ -29,22 +29,23 @@
 </template>
 
 <script>
-  export default {
-    name: "Home",
-    data() {
-      return {
-        filterMenu: false,
-      }
-    },
-    methods: {
-      newInvoice() {
-        
-      },
-      toggleFilterMenu() {
-        this.filterMenu = !this.filterMenu
-      }
+export default {
+  name: "Home",
+  props: ['displayInvoice'],
+  data() {
+    return {
+      filterMenu: false,
     }
-  };
+  },
+  methods: {
+    newInvoice() {
+      this.displayInvoice = !this.displayInvoice;
+    },
+    toggleFilterMenu() {
+      this.filterMenu = !this.filterMenu
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

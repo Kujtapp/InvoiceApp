@@ -3,7 +3,9 @@
   <div v-if="!mobile" class="app flex">
     <navigation></navigation>
     <div class="app-content flex flex-column">
-        <invoice-modal></invoice-modal>
+      <transition name="invoice">
+        <invoice-modal v-if="invoiceModal"></invoice-modal>
+      </transition>
       <router-view />
     </div>
   </div>
@@ -77,6 +79,14 @@ export default {
   height: 100vh;
   background-color: #141625;
   color: #fff;
+}
+
+.invoice-enter-active,
+.invoice-leave-active {
+  transition: 0.7s ease all;
+}
+.invoice-enter-from {
+  transform: translateX(-700px);
 }
 
 button,

@@ -1,5 +1,5 @@
 <template>
-    <div v-show="displayInvoice" class="invoice-wrap transition flex flex-column">
+    <div v-show="displayInvoice" class="invoice-wrap flex flex-column">
         <form @submit.prevent="submitForm" class="invoice-content">
             <h1>New Invoice</h1>
 
@@ -118,71 +118,71 @@
 </template>
 
 <script>
-    import { uid } from 'uid'
-    export default {
-        name: "InvoiceModal",
-        data() {
-            return {
-                dateOptions: {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                },
-                displayInvoice: true,
-                docId: null,
-                loading: null,
-                billerStreetAddress: null,
-                billerCity: null,
-                billerZipCode: null,
-                billerCountry: null,
-                clientName: null,
-                clientEmail: null,
-                clientStreetAddress: null,
-                clientCity: null,
-                clientZipCode: null,
-                clientCountry: null,
-                invoiceDateUnix: null,
-                invoiceDate: null,
-                paymentTerms: null,
-                paymentDueDateUnix: null,
-                paymentDueDate: null,
-                productDescription: null,
-                invoicePending: null,
-                invoiceDraft: null,
-                invoiceItemList: [],
-                invoiceTotal: 0,
-            };
-        },
-        methods: {
-            closeInvoice() {
-                this.displayInvoice = !this.displayInvoice
+import { uid } from 'uid'
+export default {
+    name: "InvoiceModal",
+    data() {
+        return {
+            dateOptions: {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
             },
-            addNewInvoiceItem() {
-                this.invoiceItemList.push({
-                    id: uid(),
-                    itemName: "",
-                    qty: "",
-                    price: 0,
-                    total: 0
-                });
-            },
-            deleteInvoiceItem(id) {
-                this.invoiceItemList = this.invoiceItemList.filter(item => item.id !== id);
-            }
+            displayInvoice: true,
+            docId: null,
+            loading: null,
+            billerStreetAddress: null,
+            billerCity: null,
+            billerZipCode: null,
+            billerCountry: null,
+            clientName: null,
+            clientEmail: null,
+            clientStreetAddress: null,
+            clientCity: null,
+            clientZipCode: null,
+            clientCountry: null,
+            invoiceDateUnix: null,
+            invoiceDate: null,
+            paymentTerms: null,
+            paymentDueDateUnix: null,
+            paymentDueDate: null,
+            productDescription: null,
+            invoicePending: null,
+            invoiceDraft: null,
+            invoiceItemList: [],
+            invoiceTotal: 0,
+        };
+    },
+    methods: {
+        closeInvoice() {
+            this.displayInvoice = !this.displayInvoice
         },
-        created() {
-            //get current date for invoice date field
-            this.invoiceDateUnix = Date.now();
-            this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString('eu', this.dateOptions)
+        addNewInvoiceItem() {
+            this.invoiceItemList.push({
+                id: uid(),
+                itemName: "",
+                qty: "",
+                price: 0,
+                total: 0
+            });
         },
-        watch: {
-            paymentTerms() {
-                const futureDate = new Date();
-                this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
-                this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString('eu', this.dateOptions);
-            }
+        deleteInvoiceItem(id) {
+            this.invoiceItemList = this.invoiceItemList.filter(item => item.id !== id);
+        }
+    },
+    created() {
+        //get current date for invoice date field
+        this.invoiceDateUnix = Date.now();
+        this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString('eu', this.dateOptions)
+    },
+    watch: {
+        paymentTerms() {
+            const futureDate = new Date();
+            this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
+            this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString('eu', this.dateOptions);
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -201,10 +201,6 @@
 
         @media(min-width: 900px) {
             left: 90px;
-        }
-
-        .transition {
-            transition-timing-function: ease;
         }
 
         .invoice-content {
