@@ -1,33 +1,39 @@
 <template>
-<div>
-  <div v-if="!mobile" class="app flex">
-    <navigation></navigation>
-    <div class="app-content flex flex-column">
-      <transition name="invoice">
-        <invoice-modal v-if="invoiceModal"></invoice-modal>
-      </transition>
-      <router-view />
+  <div>
+    <div v-if="!mobile" class="app flex">
+      <navigation></navigation>
+      <div class="app-content flex flex-column">
+        <transition name="invoice">
+          <invoice-modal
+            :InvoiceModal="InvoiceModal"
+            @closeInvoice="closeInvoice"
+          ></invoice-modal>
+        </transition>
+        <home @openInvoice="openInvoice()"></home>
+      </div>
+    </div>
+    <div v-else class="mobile-message flex flex-column">
+      <h2>Sorry, this app is not supported on mobile devices</h2>
+      <p>To use this app, please us ur mobile or Tablet</p>
     </div>
   </div>
-  <div v-else class="mobile-message flex flex-column">
-    <h2>Sorry, this app is not supported on mobile devices</h2>
-    <p>To use this app, please us ur mobile or Tablet</p>
-  </div>
-</div>
 </template>
 
 <script>
-import Navigation from './components/Navigation.vue'
-import InvoiceModal from './components/InvoiceModal.vue'
+import Navigation from "./components/Navigation.vue";
+import InvoiceModal from "./components/InvoiceModal.vue";
+import Home from "./views/Home.vue";
 export default {
   components: {
     Navigation,
-    InvoiceModal
+    InvoiceModal,
+    Home,
   },
   data() {
     return {
-      mobile: false
-    }
+      mobile: false,
+      InvoiceModal: false,
+    };
   },
   created() {
     window.addEventListener("resize", this.checkScreen);
@@ -35,14 +41,20 @@ export default {
   methods: {
     checkScreen() {
       const windowWidth = window.innerWidth;
-      if(windowWidth <= 750) {
+      if (windowWidth <= 750) {
         this.mobile = true;
         return;
       }
       this.mobile = false;
-    }
+    },
+    openInvoice() {
+      this.InvoiceModal = true;
+    },
+    closeInvoice() {
+      this.InvoiceModal = false;
+    },
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -59,10 +71,10 @@ export default {
   background-color: #141625;
   min-height: 100vh;
 
-  @media(min-width: 900px) {
+  @media (min-width: 900px) {
     flex-direction: row;
   }
-  @media(max-width: 900px){
+  @media (max-width: 900px) {
     flex-direction: column;
   }
   .app-content {
