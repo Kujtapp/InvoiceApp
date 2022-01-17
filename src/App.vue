@@ -95,9 +95,10 @@ export default {
 
 .invoice-enter-active,
 .invoice-leave-active {
-  transition: 0.7s ease all;
+  transition: 0.8s ease all;
 }
-.invoice-enter-from {
+.invoice-enter-from,
+.invoice-leave-to {
   transform: translateX(-700px);
 }
 

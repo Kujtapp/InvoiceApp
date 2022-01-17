@@ -41,9 +41,12 @@ export default {
     toggleFilterMenu() {
       this.filterMenu = !this.filterMenu;
     },
-    openInvoiceModal() {
+    openInvoiceModal() {      
       this.$emit("OpenInvoice");
     },
+    closeInvoiceModal() {
+      this.$emit("closeInvoice");
+    },  
   },
 };
 </script>
