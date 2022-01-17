@@ -255,6 +255,9 @@ export default {
         this.paymentDueDateUnix
       ).toLocaleDateString("eu", this.dateOptions);
     },
+    calInvoiceTotal() {
+      return this.invoiceTotal += this.invoiceItemList.total;
+    }
   },
 };
 </script>

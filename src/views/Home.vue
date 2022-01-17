@@ -25,12 +25,17 @@
         </div>
       </div>
     </div>
+    <the-resources></the-resources>
   </div>
 </template>
 
 <script>
+import TheResources from '../components/invoice-resources/TheResources.vue'
 export default {
   name: "Home",
+  components: {
+    TheResources
+  },
   emits: ["OpenInvoice"],
   data() {
     return {
@@ -43,10 +48,7 @@ export default {
     },
     openInvoiceModal() {      
       this.$emit("OpenInvoice");
-    },
-    closeInvoiceModal() {
-      this.$emit("closeInvoice");
-    },  
+    }, 
   },
 };
 </script>
