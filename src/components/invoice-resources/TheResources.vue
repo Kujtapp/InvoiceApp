@@ -1,16 +1,16 @@
 <template>
-    <div class="wrapper dark-purple">
+    <invoice-card v-for="newRes in NewResources" :key="newRes.id" class="dark-purple">
         <div class="id">
-            <p>#123123</p>
+            <p>{{ newRes.id }}</p>
         </div>
         <div class="date">
-            <p>1/17/2022</p>
+            <p>{{ newRes.invoiceDate }}</p>
         </div>
         <div class="name">
-            <p>Kujtim Ramadani</p>
+            <p>{{ newRes.clientName }}</p>
         </div>
         <div class="price">
-            <p>$399.99</p>
+            <p>{{ newRes.invoiceTotal }}</p>
         </div>
         <div class="status orange">
             <p>pending</p>
@@ -18,26 +18,18 @@
         <div>
             <img src="@/assets/icon-arrow-right.svg" alt="">
         </div>
-    </div>
+    </invoice-card>
 </template>
 
 <script>
 export default {
+    props: ['NewResources']
 }
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px;
+.status {
+    padding: 5px 30px;
     border-radius: 20px;
-    font-size: 13px;
-
-    .status {
-        padding: 5px 30px;
-        border-radius: 20px;
-    }
 }
 </style>

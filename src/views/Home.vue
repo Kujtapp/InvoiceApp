@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <the-resources></the-resources>
+    <the-resources :NewResources="NewResources"></the-resources>
   </div>
 </template>
 
@@ -36,6 +36,7 @@ export default {
   components: {
     TheResources
   },
+  props: ['NewResources'],
   emits: ["OpenInvoice"],
   data() {
     return {

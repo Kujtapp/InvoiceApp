@@ -169,7 +169,7 @@
         </div>
         <div class="right">
           <button @click="saveDraft" class="dark-purple">Save Draft</button>
-          <button @click="publishInvoice" class="purple">Create Invoice</button>
+          <button @click="createInvoice" class="purple">Create Invoice</button>
         </div>
       </div>
     </form>
@@ -186,7 +186,7 @@ export default {
       required: true,
     },
   },
-  emits: ["closeInvoice"],
+  emits: ["closeInvoice", "sendResources"],
   data() {
     return {
       dateOptions: {
@@ -194,33 +194,41 @@ export default {
         month: "short",
         day: "numeric",
       },
-      docId: null,
-      loading: null,
-      billerStreetAddress: null,
-      billerCity: null,
-      billerZipCode: null,
-      billerCountry: null,
-      clientName: null,
-      clientEmail: null,
-      clientStreetAddress: null,
-      clientCity: null,
-      clientZipCode: null,
-      clientCountry: null,
-      invoiceDateUnix: null,
-      invoiceDate: null,
-      paymentTerms: null,
-      paymentDueDateUnix: null,
-      paymentDueDate: null,
-      productDescription: null,
-      invoicePending: null,
+      invoicePending: '',
       invoiceDraft: null,
       invoiceItemList: [],
-      invoiceTotal: 0,
+
+      newInvoice: [
+        {
+          id: null,
+          billerStreetAddress: '',
+          billerCity: '',
+          billerZipCode: null,
+          billerCountry: '',
+          clientName: '',
+          clientEmail: '',
+          clientStreetAddress: '',
+          clientCity: '',
+          clientZipCode: null,
+          clientCountry: '',
+          invoiceDateUnix: null,
+          invoiceDate: '',
+          paymentTerms: null,
+          paymentDueDateUnix: null,
+          paymentDueDate: null,
+          productDescription: '',
+          invoiceTotal: '',
+        }
+      ]
     };
+    
   },
   methods: {
     closeInvoiceModal() {
       this.$emit("closeInvoice");
+    },
+    createInvoice() {
+      this.$emit("sendResources", this.newInvoice);
     },
     addNewInvoiceItem() {
       this.invoiceItemList.push({

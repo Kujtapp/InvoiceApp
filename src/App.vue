@@ -6,10 +6,11 @@
         <transition name="invoice">
           <invoice-modal
             :InvoiceModal="InvoiceModal"
-            @closeInvoice="closeInvoice"
+            @close-invoice="closeInvoice"
+            @send-resources="acceptResources($event)"
           ></invoice-modal>
         </transition>
-        <home @openInvoice="openInvoice()"></home>
+        <home @openInvoice="openInvoice()" :NewResources="NewResource"></home>
       </div>
     </div>
     <div v-else class="mobile-message flex flex-column">
@@ -33,6 +34,7 @@ export default {
     return {
       mobile: false,
       InvoiceModal: false,
+      NewResource: [],
     };
   },
   created() {
@@ -53,6 +55,9 @@ export default {
     closeInvoice() {
       this.InvoiceModal = false;
     },
+    acceptResources(newInvoice) {
+      this.NewResource = newInvoice
+    }
   },
 };
 </script>
