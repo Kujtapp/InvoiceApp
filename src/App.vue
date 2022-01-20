@@ -1,16 +1,9 @@
 <template>
   <div>
     <div v-if="!mobile" class="app flex">
-      <navigation></navigation>
+      <the-navigation></the-navigation>
       <div class="app-content flex flex-column">
-        <transition name="invoice">
-          <invoice-modal
-            :InvoiceModal="InvoiceModal"
-            @close-invoice="closeInvoice"
-            @send-resources="acceptResources($event)"
-          ></invoice-modal>
-        </transition>
-        <home @openInvoice="openInvoice()" :NewResources="NewResource"></home>
+        <home></home>
       </div>
     </div>
     <div v-else class="mobile-message flex flex-column">
@@ -21,20 +14,14 @@
 </template>
 
 <script>
-import Navigation from "./components/Navigation.vue";
-import InvoiceModal from "./components/InvoiceModal.vue";
 import Home from "./views/Home.vue";
 export default {
   components: {
-    Navigation,
-    InvoiceModal,
-    Home,
+    Home
   },
   data() {
     return {
       mobile: false,
-      InvoiceModal: false,
-      NewResource: [],
     };
   },
   created() {
@@ -49,15 +36,6 @@ export default {
       }
       this.mobile = false;
     },
-    openInvoice() {
-      this.InvoiceModal = true;
-    },
-    closeInvoice() {
-      this.InvoiceModal = false;
-    },
-    acceptResources(newInvoice) {
-      this.NewResource = newInvoice
-    }
   },
 };
 </script>

@@ -17,7 +17,7 @@
             <li>Clear Filter</li>
           </ul>
         </div>
-        <div @click="openInvoiceModal" class="button flex">
+        <div @click="openInvoice()" class="button flex">
           <div class="inner-button flex">
             <img src="@/assets/icon-plus.svg" alt="" />
           </div>
@@ -25,31 +25,47 @@
         </div>
       </div>
     </div>
-    <the-resources :NewResources="NewResources"></the-resources>
+    <transition name="invoice">
+      <invoice-modal v-if="showInvoiceModule" @acceptData="accData($event)"></invoice-modal>
+    </transition>
+    <the-resources :ReceivedData="acceptedData"></the-resources>
   </div>
 </template>
 
 <script>
-import TheResources from '../components/invoice-resources/TheResources.vue'
+import TheResources from '../components/TheResources.vue'
+import InvoiceModal from '../components/InvoiceModal.vue'
 export default {
   name: "Home",
   components: {
-    TheResources
+    TheResources,
+    InvoiceModal
   },
-  props: ['NewResources'],
-  emits: ["OpenInvoice"],
   data() {
     return {
       filterMenu: false,
+      showInvoiceModule: false,
+      acceptedData: []
     };
+  },
+  provide() {
+    return {
+      closeInvoice: this.closeInvoice
+    }
   },
   methods: {
     toggleFilterMenu() {
       this.filterMenu = !this.filterMenu;
     },
-    openInvoiceModal() {      
-      this.$emit("OpenInvoice");
-    }, 
+    openInvoice() {
+      this.showInvoiceModule = true
+    },
+    closeInvoice() {
+      this.showInvoiceModule = false
+    },
+    accData(acceptData) {
+      this.acceptedData = acceptData;
+    }
   },
 };
 </script>

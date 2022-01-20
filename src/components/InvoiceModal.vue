@@ -1,6 +1,6 @@
 <template>
-  <div v-if="InvoiceModal" class="invoice-wrap flex flex-column">
-    <form @submit.prevent="submitForm" class="invoice-content">
+  <div class="invoice-wrap flex flex-column">
+    <form @submit.prevent="createInvoice" class="invoice-content">
       <h1>New Invoice</h1>
 
       <!-- Bill From -->
@@ -9,33 +9,33 @@
         <div class="input flex flex-column">
           <label for="billerStreetAddress">Street Address</label>
           <input
-            required
+            
             type="text"
             id="billerStreetAddress"
-            v-model="billerStreetAddress"
+            v-model="newInvoice.billerStreetAddress"
           />
         </div>
         <div class="location-details flex">
           <div class="input flex flex-column">
             <label for="billerCity">City</label>
-            <input required type="text" id="billerCity" v-model="billerCity" />
+            <input  type="text" id="billerCity" v-model="newInvoice.billerCity" />
           </div>
           <div class="input flex flex-column">
             <label for="billerZipCode">Zip Code</label>
             <input
-              required
+              
               type="text"
               id="billerZipCode"
-              v-model="billerZipCode"
+              v-model="newInvoice.billerZipCode"
             />
           </div>
           <div class="input flex flex-column">
             <label for="billerCountry">Country</label>
             <input
-              required
+              
               type="text"
               id="billerCountry"
-              v-model="billerCountry"
+              v-model="newInvoice.billerCountry"
             />
           </div>
         </div>
@@ -46,42 +46,42 @@
         <h4>Bill To</h4>
         <div class="input flex flex-column">
           <label for="clientName">Client Name</label>
-          <input required type="text" id="clientName" v-model="clientName" />
+          <input type="text" id="clientName" v-model="newInvoice.clientName"/>
         </div>
         <div class="input flex flex-column">
           <label for="clientEmail">Client Email</label>
-          <input required type="text" id="clientEmail" v-model="clientEmail" />
+          <input  type="text" id="clientEmail" v-model="newInvoice.clientEmail" />
         </div>
         <div class="input flex flex-column">
           <label for="clientStreetAddress">Street Address</label>
           <input
-            required
+            
             type="text"
             id="clientStreetAddress"
-            v-model="clientStreetAddress"
+            v-model="newInvoice.clientStreetAddress"
           />
         </div>
         <div class="location-details flex">
           <div class="input flex flex-column">
             <label for="clientCity">City</label>
-            <input required type="text" id="clientCity" v-model="clientCity" />
+            <input  type="text" id="clientCity" v-model="newInvoice.clientCity" />
           </div>
           <div class="input flex flex-column">
             <label for="clientZipCode">Zip Code</label>
             <input
-              required
+              
               type="text"
               id="clientZipCode"
-              v-model="clientZipCode"
+              v-model="newInvoice.clientZipCode"
             />
           </div>
           <div class="input flex flex-column">
             <label for="clientCountry">Country</label>
             <input
-              required
+              
               type="text"
               id="clientCountry"
-              v-model="clientCountry"
+              v-model="newInvoice.clientCountry"
             />
           </div>
         </div>
@@ -96,7 +96,7 @@
               disabled
               type="text"
               id="invoiceDate"
-              v-model="invoiceDate"
+              v-model="newInvoice.invoiceDate"
             />
           </div>
           <div class="input flex flex-column">
@@ -105,13 +105,13 @@
               disabled
               type="text"
               id="paymentDueDate"
-              v-model="paymentDueDate"
+              v-model="newInvoice.paymentDueDate"
             />
           </div>
         </div>
         <div class="input flex flex-column">
           <label for="paymentTerms">Payment Terms</label>
-          <select required type="text" id="paymentTerms" v-model="paymentTerms">
+          <select  type="text" id="paymentTerms" v-model="newInvoice.paymentTerms">
             <option value="30">Net 30 days</option>
             <option value="60">Net 60 days</option>
           </select>
@@ -119,10 +119,10 @@
         <div class="input flex flex-column">
           <label for="productDescription">Product Description</label>
           <input
-            required
+            
             type="text"
             id="productDescription"
-            v-model="productDescription"
+            v-model="newInvoice.productDescription"
           />
         </div>
         <div class="work-items">
@@ -163,13 +163,13 @@
       <!-- Save/Exit -->
       <div class="save flex">
         <div>
-          <button type="button" @click="closeInvoiceModal" class="red">
+          <button @click="closeInvoice" type="button" class="red">
             Cancel
           </button>
         </div>
         <div class="right">
-          <button @click="saveDraft" class="dark-purple">Save Draft</button>
-          <button @click="createInvoice" class="purple">Create Invoice</button>
+          <button class="dark-purple">Save Draft</button>
+          <button @click="sendData()" class="purple">Create Invoice</button>
         </div>
       </div>
     </form>
@@ -180,13 +180,7 @@
 import { uid } from "uid";
 export default {
   name: "InvoiceModal",
-  props: {
-    InvoiceModal: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  emits: ["closeInvoice", "sendResources"],
+  inject: ['closeInvoice'],
   data() {
     return {
       dateOptions: {
@@ -197,8 +191,9 @@ export default {
       invoicePending: '',
       invoiceDraft: null,
       invoiceItemList: [],
+      
 
-      newInvoice: [
+      newInvoice:
         {
           id: null,
           billerStreetAddress: '',
@@ -217,19 +212,11 @@ export default {
           paymentDueDateUnix: null,
           paymentDueDate: null,
           productDescription: '',
-          invoiceTotal: '',
+          invoiceTotal: 0,
         }
-      ]
     };
-    
   },
   methods: {
-    closeInvoiceModal() {
-      this.$emit("closeInvoice");
-    },
-    createInvoice() {
-      this.$emit("sendResources", this.newInvoice);
-    },
     addNewInvoiceItem() {
       this.invoiceItemList.push({
         id: uid(),
@@ -244,11 +231,14 @@ export default {
         (item) => item.id !== id
       );
     },
+    sendData() {
+      this.$emit('acceptData', this.newInvoice)
+    },
   },
   created() {
     //get current date for invoice date field
-    this.invoiceDateUnix = Date.now();
-    this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString(
+    this.newInvoice.invoiceDateUnix = Date.now();
+    this.newInvoice.invoiceDate = new Date(this.newInvoice.invoiceDateUnix).toLocaleDateString(
       "eu",
       this.dateOptions
     );
@@ -256,16 +246,13 @@ export default {
   watch: {
     paymentTerms() {
       const futureDate = new Date();
-      this.paymentDueDateUnix = futureDate.setDate(
-        futureDate.getDate() + parseInt(this.paymentTerms)
+      this.newInvoice.paymentDueDateUnix = futureDate.setDate(
+        futureDate.getDate() + parseInt(this.newInvoice.paymentTerms)
       );
-      this.paymentDueDate = new Date(
-        this.paymentDueDateUnix
+      this.newInvoice.paymentDueDate = new Date(
+        this.newInvoice.paymentDueDateUnix
       ).toLocaleDateString("eu", this.dateOptions);
     },
-    calInvoiceTotal() {
-      return this.invoiceTotal += this.invoiceItemList.total;
-    }
   },
 };
 </script>

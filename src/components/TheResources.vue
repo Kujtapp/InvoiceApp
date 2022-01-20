@@ -1,19 +1,19 @@
 <template>
-    <invoice-card v-for="newRes in NewResources" :key="newRes.id" class="dark-purple">
+    <invoice-card class="dark-purple">
         <div class="id">
-            <p>{{ newRes.id }}</p>
+            <p>{{ ReceivedData.id }}</p>
         </div>
         <div class="date">
-            <p>{{ newRes.invoiceDate }}</p>
+            <p>{{ ReceivedData.invoiceDate }}</p>
         </div>
         <div class="name">
-            <p>{{ newRes.clientName }}</p>
+            <p>{{ ReceivedData.clientName }}</p>
         </div>
         <div class="price">
-            <p>{{ newRes.invoiceTotal }}</p>
+            <p>{{ ReceivedData.invoiceTotal }}</p>
         </div>
         <div class="status orange">
-            <p>pending</p>
+            <p></p>
         </div>
         <div>
             <img src="@/assets/icon-arrow-right.svg" alt="">
@@ -23,7 +23,9 @@
 
 <script>
 export default {
-    props: ['NewResources']
+    props: [
+        'ReceivedData'
+    ],
 }
 </script>
 
