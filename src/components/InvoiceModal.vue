@@ -212,7 +212,7 @@ export default {
           paymentDueDateUnix: null,
           paymentDueDate: null,
           productDescription: '',
-          invoiceTotal: 0,
+          invoiceTotal: 2,
         }
     };
   },
@@ -238,22 +238,18 @@ export default {
   created() {
     //get current date for invoice date field
     this.newInvoice.invoiceDateUnix = Date.now();
-    this.newInvoice.invoiceDate = new Date(this.newInvoice.invoiceDateUnix).toLocaleDateString(
-      "eu",
-      this.dateOptions
-    );
+    console.log(this.newInvoice.invoiceDateUnix);
+    this.newInvoice.invoiceDate = new Date(this.newInvoice.invoiceDateUnix).toLocaleDateString("eu",this.dateOptions);
+
+    const futureDate = new Date();
+    console.log(futureDate);
+
+    this.newInvoice.paymentDueDateUnix = futureDate.setDate(futureDate.getDate());
+    // console.log(this.newInvoice.paymentDueDateUnix);
+
+    // this.newInvoice.paymentDueDate = new Date(this.newInvoice.paymentDueDateUnix).toLocaleDateString("eu", this.dateOptions);
   },
-  watch: {
-    paymentTerms() {
-      const futureDate = new Date();
-      this.newInvoice.paymentDueDateUnix = futureDate.setDate(
-        futureDate.getDate() + parseInt(this.newInvoice.paymentTerms)
-      );
-      this.newInvoice.paymentDueDate = new Date(
-        this.newInvoice.paymentDueDateUnix
-      ).toLocaleDateString("eu", this.dateOptions);
-    },
-  },
+
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <invoice-card class="dark-purple">
+    <invoice-card class="dark-purple">  
         <div class="id">
             <p>{{ ReceivedData.id }}</p>
         </div>
