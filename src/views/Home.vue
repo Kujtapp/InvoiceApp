@@ -26,46 +26,49 @@
       </div>
     </div>
     <transition name="invoice">
-      <invoice-modal v-if="showInvoiceModule" @acceptData="accData($event)"></invoice-modal>
+      <invoice-modal
+        v-if="showInvoiceModule"
+        @acceptData="accData($event)"
+      ></invoice-modal>
     </transition>
     <the-resources :ReceivedData="acceptedData"></the-resources>
   </div>
 </template>
 
 <script>
-import TheResources from '../components/TheResources.vue'
-import InvoiceModal from '../components/InvoiceModal.vue'
+import TheResources from "../components/TheResources.vue";
+import InvoiceModal from "../components/InvoiceModal.vue";
 export default {
   name: "Home",
   components: {
     TheResources,
-    InvoiceModal
+    InvoiceModal,
   },
   data() {
     return {
       filterMenu: false,
       showInvoiceModule: false,
-      acceptedData: []
+      acceptedData: [],
     };
   },
   provide() {
     return {
-      closeInvoice: this.closeInvoice
-    }
+      closeInvoice: this.closeInvoice,
+    };
   },
   methods: {
     toggleFilterMenu() {
       this.filterMenu = !this.filterMenu;
     },
     openInvoice() {
-      this.showInvoiceModule = true
+      this.showInvoiceModule = true;
     },
     closeInvoice() {
-      this.showInvoiceModule = false
+      this.showInvoiceModule = false;
     },
     accData(acceptData) {
       this.acceptedData = acceptData;
-    }
+    },
   },
 };
 </script>

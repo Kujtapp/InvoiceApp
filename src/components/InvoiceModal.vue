@@ -9,7 +9,6 @@
         <div class="input flex flex-column">
           <label for="billerStreetAddress">Street Address</label>
           <input
-            
             type="text"
             id="billerStreetAddress"
             v-model="newInvoice.billerStreetAddress"
@@ -18,12 +17,15 @@
         <div class="location-details flex">
           <div class="input flex flex-column">
             <label for="billerCity">City</label>
-            <input  type="text" id="billerCity" v-model="newInvoice.billerCity" />
+            <input
+              type="text"
+              id="billerCity"
+              v-model="newInvoice.billerCity"
+            />
           </div>
           <div class="input flex flex-column">
             <label for="billerZipCode">Zip Code</label>
             <input
-              
               type="text"
               id="billerZipCode"
               v-model="newInvoice.billerZipCode"
@@ -32,7 +34,6 @@
           <div class="input flex flex-column">
             <label for="billerCountry">Country</label>
             <input
-              
               type="text"
               id="billerCountry"
               v-model="newInvoice.billerCountry"
@@ -46,16 +47,19 @@
         <h4>Bill To</h4>
         <div class="input flex flex-column">
           <label for="clientName">Client Name</label>
-          <input type="text" id="clientName" v-model="newInvoice.clientName"/>
+          <input type="text" id="clientName" v-model="newInvoice.clientName" />
         </div>
         <div class="input flex flex-column">
           <label for="clientEmail">Client Email</label>
-          <input  type="text" id="clientEmail" v-model="newInvoice.clientEmail" />
+          <input
+            type="text"
+            id="clientEmail"
+            v-model="newInvoice.clientEmail"
+          />
         </div>
         <div class="input flex flex-column">
           <label for="clientStreetAddress">Street Address</label>
           <input
-            
             type="text"
             id="clientStreetAddress"
             v-model="newInvoice.clientStreetAddress"
@@ -64,12 +68,15 @@
         <div class="location-details flex">
           <div class="input flex flex-column">
             <label for="clientCity">City</label>
-            <input  type="text" id="clientCity" v-model="newInvoice.clientCity" />
+            <input
+              type="text"
+              id="clientCity"
+              v-model="newInvoice.clientCity"
+            />
           </div>
           <div class="input flex flex-column">
             <label for="clientZipCode">Zip Code</label>
             <input
-              
               type="text"
               id="clientZipCode"
               v-model="newInvoice.clientZipCode"
@@ -78,7 +85,6 @@
           <div class="input flex flex-column">
             <label for="clientCountry">Country</label>
             <input
-              
               type="text"
               id="clientCountry"
               v-model="newInvoice.clientCountry"
@@ -111,7 +117,11 @@
         </div>
         <div class="input flex flex-column">
           <label for="paymentTerms">Payment Terms</label>
-          <select  type="text" id="paymentTerms" v-model="newInvoice.paymentTerms">
+          <select
+            type="text"
+            id="paymentTerms"
+            v-model="newInvoice.paymentTerms"
+          >
             <option value="30">Net 30 days</option>
             <option value="60">Net 60 days</option>
           </select>
@@ -119,7 +129,6 @@
         <div class="input flex flex-column">
           <label for="productDescription">Product Description</label>
           <input
-            
             type="text"
             id="productDescription"
             v-model="newInvoice.productDescription"
@@ -180,7 +189,7 @@
 import { uid } from "uid";
 export default {
   name: "InvoiceModal",
-  inject: ['closeInvoice'],
+  inject: ["closeInvoice"],
   data() {
     return {
       dateOptions: {
@@ -188,32 +197,28 @@ export default {
         month: "short",
         day: "numeric",
       },
-      invoicePending: '',
+      invoicePending: "",
       invoiceDraft: null,
       invoiceItemList: [],
-      
 
-      newInvoice:
-        {
-          id: null,
-          billerStreetAddress: '',
-          billerCity: '',
-          billerZipCode: null,
-          billerCountry: '',
-          clientName: '',
-          clientEmail: '',
-          clientStreetAddress: '',
-          clientCity: '',
-          clientZipCode: null,
-          clientCountry: '',
-          invoiceDateUnix: null,
-          invoiceDate: '',
-          paymentTerms: null,
-          paymentDueDateUnix: null,
-          paymentDueDate: null,
-          productDescription: '',
-          invoiceTotal: 2,
-        }
+      newInvoice: {
+        id: null,
+        billerStreetAddress: "",
+        billerCity: "",
+        billerZipCode: null,
+        billerCountry: "",
+        clientName: "",
+        clientEmail: "",
+        clientStreetAddress: "",
+        clientCity: "",
+        clientZipCode: null,
+        clientCountry: "",
+        invoiceDate: "",
+        paymentTerms: null,
+        paymentDueDate: null,
+        productDescription: "",
+        invoiceTotal: 2,
+      },
     };
   },
   methods: {
@@ -232,24 +237,46 @@ export default {
       );
     },
     sendData() {
-      this.$emit('acceptData', this.newInvoice)
+      this.$emit("acceptData", this.newInvoice);
     },
+  },
+  updated() {
+    let futureDate = new Date();
+    let formatedFutureDate = futureDate.setDate(
+      futureDate.getDate() + parseInt(this.newInvoice.paymentTerms)
+    );
+    this.newInvoice.paymentDueDate = new Date(
+      formatedFutureDate
+    ).toLocaleDateString("eu", this.dateOptions);
   },
   created() {
     //get current date for invoice date field
-    this.newInvoice.invoiceDateUnix = Date.now();
-    console.log(this.newInvoice.invoiceDateUnix);
-    this.newInvoice.invoiceDate = new Date(this.newInvoice.invoiceDateUnix).toLocaleDateString("eu",this.dateOptions);
+    // let todayDate = new Date();
 
-    const futureDate = new Date();
-    console.log(futureDate);
+    // let formatedTodayDate = new Date(todayDate).toLocaleDateString(
+    //   "eu",
+    //   this.dateOptions
+    // );
 
-    this.newInvoice.paymentDueDateUnix = futureDate.setDate(futureDate.getDate());
-    // console.log(this.newInvoice.paymentDueDateUnix);
+    // this.newInvoice.invoiceDate = formatedTodayDate;
 
-    // this.newInvoice.paymentDueDate = new Date(this.newInvoice.paymentDueDateUnix).toLocaleDateString("eu", this.dateOptions);
+    // let futureDate = new Date();
+
+    // futureDate.setDate(todayDate.getDate() + this.newInvoice.paymentTerms);
+
+    // let formatedFutureDate = new Date(futureDate).toLocaleDateString(
+    //   "eu",
+    //   this.dateOptions
+    // );
+    // console.log(" this is it", formatedFutureDate);
+    // this.newInvoice.paymentDueDate = formatedFutureDate;
+
+    let todayDate = Date.now();
+    this.newInvoice.invoiceDate = new Date(todayDate).toLocaleDateString(
+      "eu",
+      this.dateOptions
+    );
   },
-
 };
 </script>
 
