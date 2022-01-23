@@ -31,7 +31,10 @@
         @acceptData="accData($event)"
       ></invoice-modal>
     </transition>
-    <the-resources :ReceivedData="acceptedData"></the-resources>
+    <the-resources
+      v-if="displayResources"
+      :ReceivedData="acceptedData"
+    ></the-resources>
   </div>
 </template>
 
@@ -49,11 +52,13 @@ export default {
       filterMenu: false,
       showInvoiceModule: false,
       acceptedData: [],
+      displayResources: false,
     };
   },
   provide() {
     return {
       closeInvoice: this.closeInvoice,
+      toggleResources: this.toggleResources,
     };
   },
   methods: {
@@ -68,6 +73,13 @@ export default {
     },
     accData(acceptData) {
       this.acceptedData = acceptData;
+    },
+    toggleResources() {
+      if (this.acceptedData == "") {
+        return (this.displayResources = false);
+      } else {
+        return (this.displayResources = true);
+      }
     },
   },
 };

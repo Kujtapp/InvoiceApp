@@ -122,8 +122,12 @@
             id="paymentTerms"
             v-model="newInvoice.paymentTerms"
           >
-            <option value="30">Net 30 days</option>
-            <option value="60">Net 60 days</option>
+            <option value="30">1 Month</option>
+            <option value="60">2 Months</option>
+            <option value="90">3 Months</option>
+            <option value="180">6 Months</option>
+            <option value="360">1 Year</option>
+            <option value="720">2 Years</option>
           </select>
         </div>
         <div class="input flex flex-column">
@@ -178,7 +182,9 @@
         </div>
         <div class="right">
           <button class="dark-purple">Save Draft</button>
-          <button @click="sendData()" class="purple">Create Invoice</button>
+          <button @click="sendData(), toggleResources()" class="purple">
+            Create Invoice
+          </button>
         </div>
       </div>
     </form>
@@ -189,7 +195,7 @@
 import { uid } from "uid";
 export default {
   name: "InvoiceModal",
-  inject: ["closeInvoice"],
+  inject: ["closeInvoice", "toggleResources"],
   data() {
     return {
       dateOptions: {
@@ -197,12 +203,12 @@ export default {
         month: "short",
         day: "numeric",
       },
-      invoicePending: "",
+      invoicePending: "Pending",
       invoiceDraft: null,
       invoiceItemList: [],
 
       newInvoice: {
-        id: null,
+        id: uid(),
         billerStreetAddress: "",
         billerCity: "",
         billerZipCode: null,
@@ -250,27 +256,6 @@ export default {
     ).toLocaleDateString("eu", this.dateOptions);
   },
   created() {
-    //get current date for invoice date field
-    // let todayDate = new Date();
-
-    // let formatedTodayDate = new Date(todayDate).toLocaleDateString(
-    //   "eu",
-    //   this.dateOptions
-    // );
-
-    // this.newInvoice.invoiceDate = formatedTodayDate;
-
-    // let futureDate = new Date();
-
-    // futureDate.setDate(todayDate.getDate() + this.newInvoice.paymentTerms);
-
-    // let formatedFutureDate = new Date(futureDate).toLocaleDateString(
-    //   "eu",
-    //   this.dateOptions
-    // );
-    // console.log(" this is it", formatedFutureDate);
-    // this.newInvoice.paymentDueDate = formatedFutureDate;
-
     let todayDate = Date.now();
     this.newInvoice.invoiceDate = new Date(todayDate).toLocaleDateString(
       "eu",
