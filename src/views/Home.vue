@@ -35,6 +35,7 @@
       v-if="displayResources"
       :ReceivedData="acceptedData"
     ></the-resources>
+    <router-view></router-view>
   </div>
 </template>
 

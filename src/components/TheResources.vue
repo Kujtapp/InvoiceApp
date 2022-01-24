@@ -16,7 +16,9 @@
       <p>Pending</p>
     </div>
     <div>
-      <img src="@/assets/icon-arrow-right.svg" alt="" />
+      <router-link to="/InvoiceWindow">
+        <img src="@/assets/icon-arrow-right.svg" alt="" />
+      </router-link>
     </div>
   </invoice-card>
 </template>
